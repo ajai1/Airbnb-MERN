@@ -80,7 +80,7 @@ app.get("/rooms", (req, res) => {
 //Get Rooms by location
 app.get("/rooms/location/:location", (req, res) => {
   const location = req.params.location;
-  Room.find({ location: location })
+  Room.find({ location: { $regex: location, $options: "i" } })
     .then((rooms) => {
       if (!rooms) {
         return res.status(404).send();

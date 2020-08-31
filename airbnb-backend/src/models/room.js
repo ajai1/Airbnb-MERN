@@ -26,9 +26,8 @@ const Room = mongoose.model("Room", {
   availableTill: {
     type: Date,
   },
-  imageName: {
+  description: {
     type: String,
-    default: "none",
   },
   imageData: {
     type: Object,
