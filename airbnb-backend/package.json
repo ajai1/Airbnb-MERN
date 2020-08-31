@@ -1,0 +1,27 @@
+{
+  "name": "airbnb-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "server": "nodemon src/server.js",
+    "client": "npm start --prefix ../airbnb-clone/",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@material-ui/pickers": "^3.2.10",
+    "express": "^4.16.4",
+    "mongodb": "^3.1.10",
+    "mongoose": "^5.10.2",
+    "multer": "^1.4.2",
+    "validator": "^10.9.0"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.4"
+  }
+}
