@@ -8,6 +8,8 @@ const roomRouter = require("./routers/room");
 
 // --------------------------------------------------------------------------------
 const app = express();
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
 app.use(userRouter);
 app.use(roomRouter);
 app.use("/uploads", express.static("uploads"));
