@@ -1,5 +1,7 @@
 const express = require("express");
 const router = new express.Router();
+//middleware -----------------------------------------------------------------------
+const auth = require("../middleware/auth");
 
 //Model ----------------------------------------------------------------
 const Room = require("../models/room");
@@ -28,8 +30,9 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({ storage: storage, fileFilter: fileFilter });
 
 //create rooms
-router.post("/rooms", upload.single("imageData"), async (req, res) => {
-  const body = { ...req.body, imageData: req.file };
+router.post("/rooms", auth, upload.single("imageData"), async (req, res) => {
+  console.log("Posted", req.user);
+  const body = { ...req.body, imageData: req.file, host: req.user._id };
   const room = new Room(body);
   try {
     await room.save();
@@ -43,6 +46,16 @@ router.post("/rooms", upload.single("imageData"), async (req, res) => {
 router.get("/rooms", async (req, res) => {
   try {
     const rooms = await Room.find({});
+    res.send(rooms);
+  } catch (err) {
+    res.status(500).send();
+  }
+});
+
+//Get Rooms by Host
+router.get("/rooms/me", auth, async (req, res) => {
+  try {
+    const rooms = await Room.find({ host: req.user._id });
     res.send(rooms);
   } catch (err) {
     res.status(500).send();
@@ -76,4 +89,17 @@ router.get("/rooms/guests/:guests", async (req, res) => {
   }
 });
 
+//Delete Room by id
+router.delete("/rooms/:id", auth, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const rooms = req.body;
+    console.log(id);
+    const room = await Room.findByIdAndDelete(id);
+    //const rooms = await Room.deleteOne({ _id: req.user._id });
+    res.send(room);
+  } catch (err) {
+    res.status(500).send();
+  }
+});
 module.exports = router;
